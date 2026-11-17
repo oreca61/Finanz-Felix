@@ -1,0 +1,31 @@
+/* Globale CSS-Variablen für das Design */
+:root {
+    --color-brand-50: #f0fdf4;
+    --color-brand-100: #dcfce7;
+    --color-brand-500: #22c55e;
+    --color-brand-600: #16a34a;
+    --color-brand-700: #15803d;
+    --color-brand-navy: #0f172a;
+    --color-brand-dark: #1e293b;
+}
+
+/* Custom CSS Rules */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+}
+
+.tab-btn.active {
+    background-color: #1e293b;
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-fill {
+    transition: width 0.8s ease-in-out;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanz Felix - Dein intelligenter Finanzbegleiter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Externe Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="bg-brand-navy text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-slate-900 text-xl font-bold shadow-lg">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        Finanz Felix 
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-normal">v1.0</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Dein intelligenter Finanzbegleiter & Banken-Manager</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <nav class="flex bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </button>
+                <button onclick="switchTab('banks')" id="tab-banks" class="tab-btn text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns"></i> Banken-Vergleich
+                </button>
+                <button onclick="switchTab('requirements')" id="tab-requirements" class="tab-btn text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Anforderungen (REQ)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-emerald-400">Willkommen zurück! 👋</h2>
+                    <p class="text-sm text-slate-300 mt-1 max-w-2xl">
+                        Finanz Felix überwacht deine Einnahmen & Ausgaben, schützt dich vor Engpässen und findet die kundenfreundlichsten Banken für dich.
+                    </p>
+                </div>
+                <div class="flex gap-3 w-full md:w-auto">
+                    <button onclick="openModal('addTransactionModal')" class="flex-1 md:flex-initial bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-semibold px-4 py-2.5 rounded-lg text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Buchung hinzufügen
+                    </button>
+                    <button onclick="openModal('simulatorModal')" class="flex-1 md:flex-initial bg-slate-700 hover:bg-slate-600 text-white font-medium px-4 py-2.5 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> Szenario-Check
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="content-dashboard" class="space-y-8">
+            
+            <!-- Frühwarnsystem Banner -->
+            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm" id="warningBanner">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-slate-900">Frühwarnsystem: Status Optimal</h3>
+                            <span class="bg-emerald-200 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">Sicher</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-0.5">Keine Engpässe prognostiziert. Dein Liquditäts-Puffer deckt deine Fixkosten ab.</p>
+                    </div>
+                </div>
+                <button onclick="toggleAlertDemo()" class="text-xs bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg font-medium transition shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mr-1"></i> Engpass-Warnung simulieren
+                </button>
+            </div>
+
+            <!-- KPI Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Einnahmen -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex justify-between items-center text-slate-500 text-sm font-medium">
+                        <span>Einnahmen (Monat)</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-down-left"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2" id="totalIncomeDisplay">0,00 €</div>
+                    <div class="text-xs text-slate-500 font-medium mt-2 flex items-center gap-1">
+                        Keine Daten vorhanden
+                    </div>
+                </div>
+
+                <!-- Ausgaben -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex justify-between items-center text-slate-500 text-sm font-medium">
+                        <span>Ausgaben (Monat)</span>
+                        <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-up-right"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2" id="totalExpenseDisplay">0,00 €</div>
+                    <div class="text-xs text-slate-500 font-medium mt-2">
+                        Fixkosten: <span class="font-semibold text-slate-700" id="fixedCostsDisplay">0,00 €</span>
+                    </div>
+                </div>
+
+                <!-- Notgroschen -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex justify-between items-center text-slate-500 text-sm font-medium">
+                        <span>Notgroschen-Puffer</span>
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <i class="fa-solid fa-vault"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2" id="emergencyFundDisplay">0,00 €</div>
+                    <div class="text-xs text-blue-600 font-medium mt-2">
+                        Empfehlung: 3 Monatsgehälter
+                    </div>
+                </div>
+
+                <!-- Schulden Status -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex justify-between items-center text-slate-500 text-sm font-medium">
+                        <span>Schulden-Entwicklung</span>
+                        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                            <i class="fa-solid fa-chart-line-down"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 mt-2" id="debtStatusDisplay">Schuldenfrei</div>
+                    <div class="text-xs text-emerald-600 font-medium mt-2 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> Keine aktiven Konsumkredite
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section: Sparziele & Verträge -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Sparziel Visualisierung -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-bullseye text-emerald-500"></i> Aktives Sparziel
+                                </h3>
+                                <p class="text-xs text-slate-500">Visualisierung gemäß REQ-04</p>
+                            </div>
+                            <span class="bg-slate-100 text-slate-700 text-xs px-3 py-1 rounded-lg font-semibold">Unterkonto: Sparen</span>
+                        </div>
+
+                        <!-- Main Goal Card -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-6">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-base" id="savingsGoalTitle">Kein Sparziel definiert</h4>
+                                    <p class="text-xs text-slate-500" id="savingsGoalDate">Zieldatum: --</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-bold text-emerald-600" id="currentSavingsText">0 €</span>
+                                    <span class="text-slate-400 text-sm" id="targetSavingsText"> / 0 €</span>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden mb-2">
+                                <div id="savingsProgressBar" class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full progress-bar-fill" style="width: 0%;"></div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                                <span id="progressPercentageText">0% erreicht</span>
+                                <span id="remainingSavingsText">Noch 0 € verbleibend</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Deposit Simulation -->
+                        <div class="flex items-center gap-3 bg-emerald-50/50 border border-emerald-100 p-3 rounded-xl">
+                            <span class="text-xs font-medium text-emerald-800">Sparbetrag einzahlen:</span>
+                            <button onclick="addSavings(50)" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3 py-1.5 rounded-lg transition shadow-sm">+ 50 €</button>
+                            <button onclick="addSavings(100)" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3 py-1.5 rounded-lg transition shadow-sm">+ 100 €</button>
+                            <button onclick="resetSavings()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-3 py-1.5 rounded-lg transition ml-auto">Zurücksetzen</button>
+                        </div>
+                    </div>
+
+                    <!-- Auto-Save Info Footer -->
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Auto-Save aktiv (Aufrunden bei Kartenzahlung)
+                        </span>
+                        <span class="font-semibold text-slate-700" id="autoSaveDisplay">+0,00 € diesen Monat gespart</span>
+                    </div>
+                </div>
+
+                <!-- Verträge & Abonnements -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-blue-500"></i> Vertragserkennung
+                            </h3>
+                            <span class="text-xs text-slate-400">REQ-06</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Automatische Erinnerungen vor Vertragsverlängerungen.</p>
+
+                        <!-- Subscription List -->
+                        <div class="space-y-3" id="subscriptionsList">
+                            <div class="p-3 text-center text-xs text-slate-400">Keine Verträge erkannt.</div>
+                        </div>
+                    </div>
+
+                    <button onclick="alert('Vertragswecker eingerichtet: Du wirst 14 Tage vor Ablauf per Push benachrichtigt.')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-xs transition">
+                        Erinnerungen verwalten
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Transaktionen & Trend -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Transaktionen -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg text-slate-900">Letzte Buchungen & Tracking</h3>
+                        <span class="text-xs text-slate-400">REQ-01</span>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="text-xs uppercase text-slate-400 border-b border-slate-100">
+                                    <th class="pb-3 font-semibold">Kategorie / Name</th>
+                                    <th class="pb-3 font-semibold">Datum</th>
+                                    <th class="pb-3 font-semibold">Konto</th>
+                                    <th class="pb-3 font-semibold text-right">Betrag</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100" id="transactionTableBody">
+                                <tr>
+                                    <td colspan="4" class="py-4 text-center text-xs text-slate-400">Keine Buchungen vorhanden.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Trendanalyse Mockup -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-slate-900">Monatsvergleich</h3>
+                            <span class="text-xs text-slate-400">REQ-05</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-6">Grafische Trendanalyse der Sparquote.</p>
+
+                        <!-- Simulated Bar Chart -->
+                        <div class="space-y-4" id="trendChart">
+                            <div class="text-center text-xs text-slate-400 py-4">Noch nicht genügend Daten für eine Trendanalyse vorhanden.</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 mt-6" id="trendTip">
+                        💡 <strong>Felix Tipp:</strong> Füge Buchungen hinzu, um Auswertungen zu erhalten.
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: BANKEN-VERGLEICH & RATINGS -->
+        <section id="content-banks" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Banken-Finder & Bewertungen</h2>
+                        <p class="text-sm text-slate-500">Finde die kundenfreundlichsten Banken passend zu deinen Finanzzielen (REQ-02 & REQ-12).</p>
+                    </div>
+                    
+                    <!-- Search & Filter Controls -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <input type="text" id="bankSearchInput" onkeyup="filterBanks()" placeholder="Bank suchen..." class="px-4 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="bankSortSelect" onchange="filterBanks()" class="px-4 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                            <option value="rating">Höchstes Rating</option>
+                            <option value="friendliness">Kundenfreundlichkeit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bank Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="bankCardsGrid">
+                    <!-- Banken werden hier dynamisch oder per Server geladen -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: REQUIREMENTS (REQ) DOCUMENTATION -->
+        <section id="content-requirements" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div class="max-w-3xl mb-8">
+                    <h2 class="text-2xl font-bold text-slate-900">System Requirements (Funktionale Anforderungen)</h2>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Offizielle Spezifikation der Kernfunktionalitäten für das Projekt <strong>Finanz Felix</strong>.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-emerald-500/50 transition">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">REQ-01</span>
+                            <h3 class="font-bold text-slate-900">Finanz-Tracking</h3>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Das System muss Einnahmen und Ausgaben erfassen und übersichtlich in einer Übersicht darstellen.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-emerald-500/50 transition">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">REQ-02</span>
+                            <h3 class="font-bold text-slate-900">Banken-Vergleich & Ratings</h3>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Das System muss es Nutzern ermöglichen, Banken anhand von Ratings und Bewertungen zu durchsuchen und miteinander zu vergleichen.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-emerald-500/50 transition">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">REQ-03</span>
+                            <h3 class="font-bold text-slate-900">Frühwarnsystem</h3>
